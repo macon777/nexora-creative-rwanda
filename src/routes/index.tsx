@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
 import {
   Printer,
   Palette,
@@ -11,7 +12,18 @@ import {
   MapPin,
   MessageCircle,
   ArrowUpRight,
+  PenTool,
+  Coffee,
+  Trophy,
+  Gift,
+  Sticker,
+  BookOpen,
+  Menu,
+  X,
+  Plus,
+  Minus,
 } from "lucide-react";
+
 
 import logo from "@/assets/nexora-logo.jpg.asset.json";
 import heroPrint from "@/assets/hero-print.jpg";
@@ -63,36 +75,86 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-const services = [
+const CATEGORIES = ["All", "Print", "Branding", "Merch", "Media"] as const;
+type Category = (typeof CATEGORIES)[number];
+
+const services: {
+  icon: typeof Printer;
+  title: string;
+  desc: string;
+  cat: Exclude<Category, "All">;
+}[] = [
   {
     icon: Printer,
     title: "Digital & Offset Printing",
     desc: "Business cards, flyers, brochures, books, invoices and receipt books — crisp colour, fast turnaround.",
+    cat: "Print",
   },
   {
     icon: Flag,
     title: "Large Format & Signage",
     desc: "Banners, roll-ups, backdrops, billboards, window graphics and branded shop fronts.",
+    cat: "Print",
+  },
+  {
+    icon: PenTool,
+    title: "Graphics Design",
+    desc: "Posters, social media kits, menus, magazines and layout design by our in-house designers.",
+    cat: "Branding",
   },
   {
     icon: Palette,
-    title: "Branding & Design",
-    desc: "Logos, visual identity, packaging and full brand kits built to work in print and on screen.",
+    title: "Branding & Identity",
+    desc: "Logos, brand guidelines, packaging and complete identity systems for print and screen.",
+    cat: "Branding",
   },
   {
     icon: Shirt,
-    title: "Merchandise & Apparel",
-    desc: "T-shirts, caps, tote bags, mugs, umbrellas and corporate gifts with embroidery or DTF print.",
+    title: "T-Shirt Printing",
+    desc: "DTF, screen and vinyl printing on t-shirts, polos, hoodies and caps — single pieces or bulk teamwear.",
+    cat: "Merch",
+  },
+  {
+    icon: Coffee,
+    title: "Mug Printing",
+    desc: "Photo mugs, magic mugs, water bottles and flasks sublimated with your photo, logo or message.",
+    cat: "Merch",
+  },
+  {
+    icon: Trophy,
+    title: "Awards & Trophies",
+    desc: "Engraved acrylic, crystal and wooden awards, medals, plaques and certificates for any ceremony.",
+    cat: "Merch",
+  },
+  {
+    icon: Gift,
+    title: "Corporate Gifts",
+    desc: "Branded pens, notebooks, tote bags, umbrellas, keyholders and full welcome-kit packaging.",
+    cat: "Merch",
+  },
+  {
+    icon: Sticker,
+    title: "Stickers & Labels",
+    desc: "Die-cut stickers, product labels, vehicle branding and waterproof outdoor decals.",
+    cat: "Print",
   },
   {
     icon: Camera,
     title: "Photography & Videography",
     desc: "Events, portraits, product shoots and promo video — captured and edited in house.",
+    cat: "Media",
   },
   {
     icon: Cpu,
     title: "Electronics & ID Solutions",
     desc: "ID cards, badges, lamination, plus supply and setup of everyday office electronics.",
+    cat: "Media",
+  },
+  {
+    icon: BookOpen,
+    title: "Books & Binding",
+    desc: "Company profiles, reports, dissertations and wedding programmes — printed, bound and finished.",
+    cat: "Print",
   },
 ];
 
@@ -102,9 +164,52 @@ const steps = [
   { n: "03", t: "Print & deliver", d: "Produced in Kigali and delivered where you need it." },
 ];
 
+const faqs = [
+  {
+    q: "How fast can you print?",
+    a: "Most small jobs — business cards, flyers, mugs, t-shirts — are ready the same day or within 24 hours. Large format and bulk orders usually take 2 to 3 days.",
+  },
+  {
+    q: "Do you design if I don't have artwork?",
+    a: "Yes. Our graphics design team can create the artwork from scratch, or clean up what you already have, before printing.",
+  },
+  {
+    q: "What is the minimum order?",
+    a: "There is no minimum for mugs, t-shirts, awards or business cards. We print one piece just as happily as a thousand.",
+  },
+  {
+    q: "Do you deliver in Kigali?",
+    a: "We deliver anywhere in Kigali and ship upcountry through the bus courier services on request.",
+  },
+];
+
 const WHATSAPP = "https://wa.me/250788279682";
 
+const NAV = [
+  ["Services", "#services"],
+  ["Work", "#work"],
+  ["Process", "#process"],
+  ["Quote", "#quote"],
+  ["FAQ", "#faq"],
+  ["Contact", "#contact"],
+];
+
 function Index() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [cat, setCat] = useState<Category>("All");
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [selectedService, setSelectedService] = useState("Digital & Offset Printing");
+
+  const shown = useMemo(
+    () => (cat === "All" ? services : services.filter((s) => s.cat === cat)),
+    [cat],
+  );
+
+  function pickService(title: string) {
+    setSelectedService(title);
+    document.getElementById("quote")?.scrollIntoView({ behavior: "smooth" });
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
@@ -120,16 +225,42 @@ function Index() {
             />
             <span className="font-display text-sm tracking-[0.28em] uppercase">Nexora</span>
           </a>
-          <nav className="hidden items-center gap-8 text-xs tracking-[0.18em] uppercase text-muted-foreground md:flex">
-            <a href="#services" className="transition-colors hover:text-foreground">Services</a>
-            <a href="#work" className="transition-colors hover:text-foreground">Work</a>
-            <a href="#process" className="transition-colors hover:text-foreground">Process</a>
-            <a href="#contact" className="transition-colors hover:text-foreground">Contact</a>
+          <nav className="hidden items-center gap-7 text-xs tracking-[0.18em] uppercase text-muted-foreground lg:flex">
+            {NAV.map(([label, href]) => (
+              <a key={href} href={href} className="transition-colors hover:text-foreground">
+                {label}
+              </a>
+            ))}
           </nav>
-          <a href={WHATSAPP} target="_blank" rel="noreferrer" className="btn-ink">
-            Get a quote
-          </a>
+          <div className="flex items-center gap-2">
+            <a href="#quote" className="btn-ink hidden sm:inline-flex">
+              Get a quote
+            </a>
+            <button
+              type="button"
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border lg:hidden"
+            >
+              {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+          </div>
         </div>
+        {menuOpen && (
+          <nav className="border-t border-border bg-background px-5 py-4 lg:hidden">
+            {NAV.map(([label, href]) => (
+              <a
+                key={href}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className="block py-3 text-xs tracking-[0.2em] uppercase text-muted-foreground"
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+        )}
       </header>
 
       {/* Hero */}
@@ -202,15 +333,39 @@ function Index() {
         <h2 className="font-display mt-5 max-w-2xl text-4xl tracking-tight md:text-5xl">
           Every service under one roof
         </h2>
-        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => (
-            <article key={s.title} className="group bg-background p-8 transition-colors hover:bg-secondary hover:text-secondary-foreground">
+        <div className="mt-8 flex flex-wrap gap-2">
+          {CATEGORIES.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setCat(c)}
+              className={
+                c === cat
+                  ? "rounded-full bg-secondary px-4 py-2 text-[11px] tracking-[0.18em] uppercase text-secondary-foreground"
+                  : "rounded-full border border-border px-4 py-2 text-[11px] tracking-[0.18em] uppercase text-muted-foreground transition-colors hover:text-foreground"
+              }
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+        <div className="mt-8 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {shown.map((s) => (
+            <button
+              key={s.title}
+              type="button"
+              onClick={() => pickService(s.title)}
+              className="group bg-background p-8 text-left transition-colors hover:bg-secondary hover:text-secondary-foreground"
+            >
               <s.icon className="h-6 w-6 text-accent" strokeWidth={1.5} />
               <h3 className="font-display mt-6 text-xl">{s.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground group-hover:text-secondary-foreground/70">
                 {s.desc}
               </p>
-            </article>
+              <span className="mt-5 inline-flex items-center gap-1 text-[11px] tracking-[0.18em] uppercase text-accent">
+                Request quote <ArrowUpRight className="h-3 w-3" />
+              </span>
+            </button>
           ))}
         </div>
       </section>
@@ -265,6 +420,54 @@ function Index() {
           ))}
         </div>
       </section>
+
+      {/* Quote builder */}
+      <section id="quote" className="border-y border-border bg-muted/40">
+        <div className="mx-auto grid max-w-6xl gap-12 px-5 py-20 md:grid-cols-[1fr_1.1fr] md:py-28">
+          <div>
+            <p className="rule-label">Instant quote</p>
+            <h2 className="font-display mt-5 text-4xl tracking-tight md:text-5xl">
+              Build your order,
+              <br />
+              send it in one tap.
+            </h2>
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Pick the service, tell us how many and any details. We open WhatsApp with your
+              request already written — you just press send.
+            </p>
+          </div>
+          <QuoteForm service={selectedService} onServiceChange={setSelectedService} />
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="mx-auto max-w-3xl px-5 py-20 md:py-28">
+        <p className="rule-label">Questions</p>
+        <h2 className="font-display mt-5 text-4xl tracking-tight md:text-5xl">Good to know</h2>
+        <div className="mt-10 divide-y divide-border border-y border-border">
+          {faqs.map((f, i) => (
+            <div key={f.q}>
+              <button
+                type="button"
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                aria-expanded={openFaq === i}
+                className="flex w-full items-center justify-between gap-6 py-5 text-left"
+              >
+                <span className="font-display text-lg">{f.q}</span>
+                {openFaq === i ? (
+                  <Minus className="h-4 w-4 shrink-0 text-accent" />
+                ) : (
+                  <Plus className="h-4 w-4 shrink-0 text-accent" />
+                )}
+              </button>
+              {openFaq === i && (
+                <p className="pb-6 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
 
       {/* Contact */}
       <section id="contact" className="bg-secondary text-secondary-foreground">
@@ -356,6 +559,109 @@ function Index() {
           </a>
         </div>
       </footer>
+
+      {/* Floating WhatsApp */}
+      <a
+        href={WHATSAPP}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Chat with Nexora Creatives on WhatsApp"
+        className="fixed right-5 bottom-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-secondary text-secondary-foreground shadow-lg transition-transform hover:scale-105"
+      >
+        <MessageCircle className="h-6 w-6" />
+      </a>
     </div>
+  );
+}
+
+function QuoteForm({
+  service,
+  onServiceChange,
+}: {
+  service: string;
+  onServiceChange: (s: string) => void;
+}) {
+  const [name, setName] = useState("");
+  const [quantity, setQuantity] = useState("1");
+  const [deadline, setDeadline] = useState("Standard (2-3 days)");
+  const [details, setDetails] = useState("");
+
+  const message = `Hello Nexora Creatives! My name is ${name || "..."}.
+Service: ${service}
+Quantity: ${quantity}
+Timeline: ${deadline}
+Details: ${details || "-"}`;
+
+  const href = `${WHATSAPP}?text=${encodeURIComponent(message)}`;
+
+  return (
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="rounded-xl border border-border bg-background p-6 md:p-8"
+    >
+      <div className="grid gap-5">
+        <label className="grid gap-2">
+          <span className="field-label">Your name</span>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Aline K."
+            className="field"
+          />
+        </label>
+        <label className="grid gap-2">
+          <span className="field-label">Service</span>
+          <select
+            value={service}
+            onChange={(e) => onServiceChange(e.target.value)}
+            className="field"
+          >
+            {services.map((s) => (
+              <option key={s.title}>{s.title}</option>
+            ))}
+          </select>
+        </label>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <label className="grid gap-2">
+            <span className="field-label">Quantity</span>
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              className="field"
+            />
+          </label>
+          <label className="grid gap-2">
+            <span className="field-label">Timeline</span>
+            <select
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
+              className="field"
+            >
+              <option>Same day (rush)</option>
+              <option>Standard (2-3 days)</option>
+              <option>Flexible</option>
+            </select>
+          </label>
+        </div>
+        <label className="grid gap-2">
+          <span className="field-label">Details</span>
+          <textarea
+            rows={3}
+            value={details}
+            onChange={(e) => setDetails(e.target.value)}
+            placeholder="Sizes, colours, artwork, delivery place..."
+            className="field resize-none"
+          />
+        </label>
+      </div>
+      <a href={href} target="_blank" rel="noreferrer" className="btn-ink mt-6 w-full">
+        Send request on WhatsApp
+      </a>
+      <p className="mt-3 text-center text-xs text-muted-foreground">
+        No account needed — it opens WhatsApp with your details filled in.
+      </p>
+    </form>
   );
 }
