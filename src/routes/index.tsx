@@ -421,6 +421,54 @@ function Index() {
         </div>
       </section>
 
+      {/* Quote builder */}
+      <section id="quote" className="border-y border-border bg-muted/40">
+        <div className="mx-auto grid max-w-6xl gap-12 px-5 py-20 md:grid-cols-[1fr_1.1fr] md:py-28">
+          <div>
+            <p className="rule-label">Instant quote</p>
+            <h2 className="font-display mt-5 text-4xl tracking-tight md:text-5xl">
+              Build your order,
+              <br />
+              send it in one tap.
+            </h2>
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Pick the service, tell us how many and any details. We open WhatsApp with your
+              request already written — you just press send.
+            </p>
+          </div>
+          <QuoteForm service={selectedService} onServiceChange={setSelectedService} />
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="mx-auto max-w-3xl px-5 py-20 md:py-28">
+        <p className="rule-label">Questions</p>
+        <h2 className="font-display mt-5 text-4xl tracking-tight md:text-5xl">Good to know</h2>
+        <div className="mt-10 divide-y divide-border border-y border-border">
+          {faqs.map((f, i) => (
+            <div key={f.q}>
+              <button
+                type="button"
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                aria-expanded={openFaq === i}
+                className="flex w-full items-center justify-between gap-6 py-5 text-left"
+              >
+                <span className="font-display text-lg">{f.q}</span>
+                {openFaq === i ? (
+                  <Minus className="h-4 w-4 shrink-0 text-accent" />
+                ) : (
+                  <Plus className="h-4 w-4 shrink-0 text-accent" />
+                )}
+              </button>
+              {openFaq === i && (
+                <p className="pb-6 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+
       {/* Contact */}
       <section id="contact" className="bg-secondary text-secondary-foreground">
         <div className="mx-auto grid max-w-6xl gap-12 px-5 py-20 md:grid-cols-2 md:py-28">
