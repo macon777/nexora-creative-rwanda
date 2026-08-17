@@ -1,14 +1,16 @@
-# Welcome to your Lovable project
+# Nexora Creative Rwanda
+
+Make me a website for a printing and design businesses in rwanda its contacts are in the screenshot uploaded use white as primary and black as secondary clean with a good landing page and different printing services they do clean and be creative. Use the logo i uploaded as the fav icon and meta tag and the logo which comes on the title of the tab. The business is called nexora creative.
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/e70f83a2-65ca-4eb7-8865-64fbf79f6288).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +22,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
