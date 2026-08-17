@@ -185,7 +185,31 @@ const faqs = [
 
 const WHATSAPP = "https://wa.me/250788279682";
 
+const NAV = [
+  ["Services", "#services"],
+  ["Work", "#work"],
+  ["Process", "#process"],
+  ["Quote", "#quote"],
+  ["FAQ", "#faq"],
+  ["Contact", "#contact"],
+];
+
 function Index() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [cat, setCat] = useState<Category>("All");
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [selectedService, setSelectedService] = useState("Digital & Offset Printing");
+
+  const shown = useMemo(
+    () => (cat === "All" ? services : services.filter((s) => s.cat === cat)),
+    [cat],
+  );
+
+  function pickService(title: string) {
+    setSelectedService(title);
+    document.getElementById("quote")?.scrollIntoView({ behavior: "smooth" });
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
@@ -201,16 +225,42 @@ function Index() {
             />
             <span className="font-display text-sm tracking-[0.28em] uppercase">Nexora</span>
           </a>
-          <nav className="hidden items-center gap-8 text-xs tracking-[0.18em] uppercase text-muted-foreground md:flex">
-            <a href="#services" className="transition-colors hover:text-foreground">Services</a>
-            <a href="#work" className="transition-colors hover:text-foreground">Work</a>
-            <a href="#process" className="transition-colors hover:text-foreground">Process</a>
-            <a href="#contact" className="transition-colors hover:text-foreground">Contact</a>
+          <nav className="hidden items-center gap-7 text-xs tracking-[0.18em] uppercase text-muted-foreground lg:flex">
+            {NAV.map(([label, href]) => (
+              <a key={href} href={href} className="transition-colors hover:text-foreground">
+                {label}
+              </a>
+            ))}
           </nav>
-          <a href={WHATSAPP} target="_blank" rel="noreferrer" className="btn-ink">
-            Get a quote
-          </a>
+          <div className="flex items-center gap-2">
+            <a href="#quote" className="btn-ink hidden sm:inline-flex">
+              Get a quote
+            </a>
+            <button
+              type="button"
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border lg:hidden"
+            >
+              {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+          </div>
         </div>
+        {menuOpen && (
+          <nav className="border-t border-border bg-background px-5 py-4 lg:hidden">
+            {NAV.map(([label, href]) => (
+              <a
+                key={href}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className="block py-3 text-xs tracking-[0.2em] uppercase text-muted-foreground"
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+        )}
       </header>
 
       {/* Hero */}
