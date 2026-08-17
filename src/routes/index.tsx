@@ -333,15 +333,39 @@ function Index() {
         <h2 className="font-display mt-5 max-w-2xl text-4xl tracking-tight md:text-5xl">
           Every service under one roof
         </h2>
-        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => (
-            <article key={s.title} className="group bg-background p-8 transition-colors hover:bg-secondary hover:text-secondary-foreground">
+        <div className="mt-8 flex flex-wrap gap-2">
+          {CATEGORIES.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setCat(c)}
+              className={
+                c === cat
+                  ? "rounded-full bg-secondary px-4 py-2 text-[11px] tracking-[0.18em] uppercase text-secondary-foreground"
+                  : "rounded-full border border-border px-4 py-2 text-[11px] tracking-[0.18em] uppercase text-muted-foreground transition-colors hover:text-foreground"
+              }
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+        <div className="mt-8 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {shown.map((s) => (
+            <button
+              key={s.title}
+              type="button"
+              onClick={() => pickService(s.title)}
+              className="group bg-background p-8 text-left transition-colors hover:bg-secondary hover:text-secondary-foreground"
+            >
               <s.icon className="h-6 w-6 text-accent" strokeWidth={1.5} />
               <h3 className="font-display mt-6 text-xl">{s.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground group-hover:text-secondary-foreground/70">
                 {s.desc}
               </p>
-            </article>
+              <span className="mt-5 inline-flex items-center gap-1 text-[11px] tracking-[0.18em] uppercase text-accent">
+                Request quote <ArrowUpRight className="h-3 w-3" />
+              </span>
+            </button>
           ))}
         </div>
       </section>
