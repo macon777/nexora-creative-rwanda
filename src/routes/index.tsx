@@ -573,3 +573,95 @@ function Index() {
     </div>
   );
 }
+
+function QuoteForm({
+  service,
+  onServiceChange,
+}: {
+  service: string;
+  onServiceChange: (s: string) => void;
+}) {
+  const [name, setName] = useState("");
+  const [quantity, setQuantity] = useState("1");
+  const [deadline, setDeadline] = useState("Standard (2-3 days)");
+  const [details, setDetails] = useState("");
+
+  const message = `Hello Nexora Creatives! My name is ${name || "..."}.
+Service: ${service}
+Quantity: ${quantity}
+Timeline: ${deadline}
+Details: ${details || "-"}`;
+
+  const href = `${WHATSAPP}?text=${encodeURIComponent(message)}`;
+
+  return (
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="rounded-xl border border-border bg-background p-6 md:p-8"
+    >
+      <div className="grid gap-5">
+        <label className="grid gap-2">
+          <span className="field-label">Your name</span>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Aline K."
+            className="field"
+          />
+        </label>
+        <label className="grid gap-2">
+          <span className="field-label">Service</span>
+          <select
+            value={service}
+            onChange={(e) => onServiceChange(e.target.value)}
+            className="field"
+          >
+            {services.map((s) => (
+              <option key={s.title}>{s.title}</option>
+            ))}
+          </select>
+        </label>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <label className="grid gap-2">
+            <span className="field-label">Quantity</span>
+            <input
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              className="field"
+            />
+          </label>
+          <label className="grid gap-2">
+            <span className="field-label">Timeline</span>
+            <select
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
+              className="field"
+            >
+              <option>Same day (rush)</option>
+              <option>Standard (2-3 days)</option>
+              <option>Flexible</option>
+            </select>
+          </label>
+        </div>
+        <label className="grid gap-2">
+          <span className="field-label">Details</span>
+          <textarea
+            rows={3}
+            value={details}
+            onChange={(e) => setDetails(e.target.value)}
+            placeholder="Sizes, colours, artwork, delivery place..."
+            className="field resize-none"
+          />
+        </label>
+      </div>
+      <a href={href} target="_blank" rel="noreferrer" className="btn-ink mt-6 w-full">
+        Send request on WhatsApp
+      </a>
+      <p className="mt-3 text-center text-xs text-muted-foreground">
+        No account needed — it opens WhatsApp with your details filled in.
+      </p>
+    </form>
+  );
+}
