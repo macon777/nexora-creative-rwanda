@@ -63,36 +63,86 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-const services = [
+const CATEGORIES = ["All", "Print", "Branding", "Merch", "Media"] as const;
+type Category = (typeof CATEGORIES)[number];
+
+const services: {
+  icon: typeof Printer;
+  title: string;
+  desc: string;
+  cat: Exclude<Category, "All">;
+}[] = [
   {
     icon: Printer,
     title: "Digital & Offset Printing",
     desc: "Business cards, flyers, brochures, books, invoices and receipt books — crisp colour, fast turnaround.",
+    cat: "Print",
   },
   {
     icon: Flag,
     title: "Large Format & Signage",
     desc: "Banners, roll-ups, backdrops, billboards, window graphics and branded shop fronts.",
+    cat: "Print",
+  },
+  {
+    icon: PenTool,
+    title: "Graphics Design",
+    desc: "Posters, social media kits, menus, magazines and layout design by our in-house designers.",
+    cat: "Branding",
   },
   {
     icon: Palette,
-    title: "Branding & Design",
-    desc: "Logos, visual identity, packaging and full brand kits built to work in print and on screen.",
+    title: "Branding & Identity",
+    desc: "Logos, brand guidelines, packaging and complete identity systems for print and screen.",
+    cat: "Branding",
   },
   {
     icon: Shirt,
-    title: "Merchandise & Apparel",
-    desc: "T-shirts, caps, tote bags, mugs, umbrellas and corporate gifts with embroidery or DTF print.",
+    title: "T-Shirt Printing",
+    desc: "DTF, screen and vinyl printing on t-shirts, polos, hoodies and caps — single pieces or bulk teamwear.",
+    cat: "Merch",
+  },
+  {
+    icon: Coffee,
+    title: "Mug Printing",
+    desc: "Photo mugs, magic mugs, water bottles and flasks sublimated with your photo, logo or message.",
+    cat: "Merch",
+  },
+  {
+    icon: Trophy,
+    title: "Awards & Trophies",
+    desc: "Engraved acrylic, crystal and wooden awards, medals, plaques and certificates for any ceremony.",
+    cat: "Merch",
+  },
+  {
+    icon: Gift,
+    title: "Corporate Gifts",
+    desc: "Branded pens, notebooks, tote bags, umbrellas, keyholders and full welcome-kit packaging.",
+    cat: "Merch",
+  },
+  {
+    icon: Sticker,
+    title: "Stickers & Labels",
+    desc: "Die-cut stickers, product labels, vehicle branding and waterproof outdoor decals.",
+    cat: "Print",
   },
   {
     icon: Camera,
     title: "Photography & Videography",
     desc: "Events, portraits, product shoots and promo video — captured and edited in house.",
+    cat: "Media",
   },
   {
     icon: Cpu,
     title: "Electronics & ID Solutions",
     desc: "ID cards, badges, lamination, plus supply and setup of everyday office electronics.",
+    cat: "Media",
+  },
+  {
+    icon: BookOpen,
+    title: "Books & Binding",
+    desc: "Company profiles, reports, dissertations and wedding programmes — printed, bound and finished.",
+    cat: "Print",
   },
 ];
 
@@ -100,6 +150,25 @@ const steps = [
   { n: "01", t: "Tell us the job", d: "Send your files or just the idea on WhatsApp." },
   { n: "02", t: "We design & proof", d: "You approve a digital proof before anything prints." },
   { n: "03", t: "Print & deliver", d: "Produced in Kigali and delivered where you need it." },
+];
+
+const faqs = [
+  {
+    q: "How fast can you print?",
+    a: "Most small jobs — business cards, flyers, mugs, t-shirts — are ready the same day or within 24 hours. Large format and bulk orders usually take 2 to 3 days.",
+  },
+  {
+    q: "Do you design if I don't have artwork?",
+    a: "Yes. Our graphics design team can create the artwork from scratch, or clean up what you already have, before printing.",
+  },
+  {
+    q: "What is the minimum order?",
+    a: "There is no minimum for mugs, t-shirts, awards or business cards. We print one piece just as happily as a thousand.",
+  },
+  {
+    q: "Do you deliver in Kigali?",
+    a: "We deliver anywhere in Kigali and ship upcountry through the bus courier services on request.",
+  },
 ];
 
 const WHATSAPP = "https://wa.me/250788279682";
