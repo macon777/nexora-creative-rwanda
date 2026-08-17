@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
 import {
   Printer,
   Palette,
@@ -11,7 +12,18 @@ import {
   MapPin,
   MessageCircle,
   ArrowUpRight,
+  PenTool,
+  Coffee,
+  Trophy,
+  Gift,
+  Sticker,
+  BookOpen,
+  Menu,
+  X,
+  Plus,
+  Minus,
 } from "lucide-react";
+
 
 import logo from "@/assets/nexora-logo.jpg.asset.json";
 import heroPrint from "@/assets/hero-print.jpg";
