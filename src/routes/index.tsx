@@ -559,6 +559,17 @@ function Index() {
           </a>
         </div>
       </footer>
+
+      {/* Floating WhatsApp */}
+      <a
+        href={WHATSAPP}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Chat with Nexora Creatives on WhatsApp"
+        className="fixed right-5 bottom-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-secondary text-secondary-foreground shadow-lg transition-transform hover:scale-105"
+      >
+        <MessageCircle className="h-6 w-6" />
+      </a>
     </div>
   );
 }
